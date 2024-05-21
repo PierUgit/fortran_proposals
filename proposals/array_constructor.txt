@@ -14,7 +14,7 @@ array constructors.
 2. Motivation
 
 One of the main usages of the implied do feature is to define arithmetic
-sequences is the array constructor. In some other languages this is 
+sequences in array constructors. In some other languages this is 
 provided by intrinsic functions (`range` in Python, `iota` in APL, ...). 
 In practice, many fortraner do implement their own function to get the
 feature and hide the implied do loop.
@@ -30,7 +30,7 @@ Note that some compilers are already accepting this syntax:
 - flang-new (although with an unexpected behavior IMO)
 
 And that this is quite similar to the popular Matlab syntax (which is 
-just `start:inc:stop` instead of `start:stop:inc`)
+`start:inc:stop` instead of `start:stop:inc`)
 
 
 3. Proposed solution
@@ -50,8 +50,8 @@ print*, [1:0]   ! this one is an empty constructor
 3.2. Notes
 
 `start:stop:inc` would NOT be an array constructor in itself, it would 
-just be a notation part in an array constructor (so it would differ from 
-the Matlab notation, where `start:inc:stop` actually is an array).
+just be a notation part of an array constructor (so it would differ from 
+the Matlab notation, where `start:inc:stop` is actually an array).
 
 
 4. Issues / Objections / Limitations
@@ -59,9 +59,9 @@ the Matlab notation, where `start:inc:stop` actually is an array).
 4.1. It's just a syntactic sugar
 
 Yes it is. But the introduction of the square brackets `[...]` for the 
-array constructors as an alternative to `(\...\)` was also just a 
-syntactic sugar. And because it's simple and intuitive, it can be
-attractive to people who are new to Fortran.
+array constructors as an alternative to `(\...\)` was also a syntactic
+sugar. And because it's simple, intuitive, and internally consistent, it 
+can be attractive to people who are new to Fortran.
 
 4.2. Are there possible ambiguities for the compilers?
 
