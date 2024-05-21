@@ -21,24 +21,37 @@ feature and hide the implied do loop.
 
 Fortran has already a very intuitive syntax to define an integer range,
 which is used for the array sections and the `do concurrent` construct,
-e.g. `my_array(1:n,2:m:2)`. This syntax could be as well used in the array 
-constructors, as a shorter and more readable alternative to the implied-do 
-syntax.
+e.g. `my_array(1:n,2:m:2)`. This syntax could be as well used in the 
+array constructors, as a shorter and more readable alternative to the 
+implied do syntax.
 
 Note that some compilers are already accepting this syntax:
 - the Intel compiler (since at least ifort 19)
 - flang-new (although with an unexpected behavior IMO)
 
-And that this is quite similar to the popular Matlab syntax (which is just
-`start:inc:stop` instead of `start:stop:inc`)
+And that this is quite similar to the popular Matlab syntax (which is 
+just `start:inc:stop` instead of `start:stop:inc`)
+
 
 3. Proposed solution
 
-`start:stop:inc`, with `start`, `stop`, and `inc` being integer expressions
-of the same kind, could be used in array constructors as an alternative to
-`(i, integer(kind=kind(start)) :: i = start, stop, inc)`
+`start:stop:inc`, with `start`, `stop`, and `inc` being integer 
+expressions of the same kind, could be used in array constructors as an
+alternative to `(i, integer(kind=kind(start)) :: i = start, stop, inc)`
 
 `:inc` would be optional, with a default value equal to 1, as usual.
+
+3.1. Examples
+
+print*, [1:10:3]
+print*, [50, 70:60:-1, 80]
+print*, [1:0]   ! this one is an empty constructor
+
+3.2. Notes
+
+`start:stop:inc` would NOT be an array constructor in itself, it would 
+just be a notation part in an array constructor (so it would differ from 
+the Matlab notation, where `start:inc:stop` actually is an array).
 
 
 4. Issues / Objections / Limitations
@@ -46,13 +59,15 @@ of the same kind, could be used in array constructors as an alternative to
 4.1. It's just a syntactic sugar
 
 Yes it is. But the introduction of the square brackets `[...]` for the 
-array constructors as an alternative to `(\...\)` was also just a syntactic
-sugar.
+array constructors as an alternative to `(\...\)` was also just a 
+syntactic sugar. And because it's simple and intuitive, it can be
+attractive to people who are new to Fortran.
 
 4.2. Are there possible ambiguities for the compilers?
 
-One of the major compilers around has been accepting this syntax for years, so
-it seems that there's no significant issue for the compilers to implement it.
+One of the major compilers around has been accepting this syntax for 
+years, so it seems that there's no significant issue for the compilers 
+to implement it.
 
 4.3. Why restricting this new syntax to array contructors?
 
@@ -60,24 +75,24 @@ The implied do loop can be used in I/O lists, without being enclosed
 in an array constructor, e.g. `print*, (i, i = start, stop)` .
 It would be tempting then to allow `print*, start:stop` as well.
 
-But in practice, just printing arithmetic sequences is much less common than
-using arithmetic sequences. In I/O lists the implied do control variable is 
-generally used for array indexing or within some expression. 
+But in practice, just printing arithmetic sequences is much less common 
+than using arithmetic sequences. In I/O lists the implied do control 
+variable is generally used for array indexing or within some expression. 
 
 Array indexing case: `print*, (a(i), i = start, stop)`
-- the equivalent would be `print*, a(start:stop)`, which is just a classical
-  array section
+- the equivalent would be `print*, a(start:stop)`, which is just a 
+  classical array section
 Expression case: `print*, ((-i)**2, i = start, stop)`
-- the equivalent would be `print*, (-[start:stop])**2`, which involves an 
-  array constructor
-- `print*, (-start:stop)**2` would be possible, but precedence rules would
-  be needed (to specify that the minus sign applies to the `start:stop` 
-  entity and not only to `start`. And the notation is not simpler than with
-  the array contructor.
+- the equivalent would be `print*, (-[start:stop])**2`, which involves 
+  an array constructor
+- `print*, (-start:stop)**2` would be possible, but precedence rules 
+  would be needed (to specify that the minus sign applies to the 
+  `start:stop` entity and not only to `start`. And the notation is not 
+  simpler than with the array contructor.
 
-Overall, it doesn't look pertinent to extend the proposed syntax to I/O lists
-without being part of an array contructor. Note that the Intel compiler does
-not accept `print*, start:stop`, by the way.
+Overall, it doesn't look really pertinent to extend the proposed syntax 
+to I/O lists without being part of an array contructor. Note that the 
+Intel compiler does not accept `print*, start:stop`, by the way.
 
 
 5. References
