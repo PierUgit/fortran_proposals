@@ -36,14 +36,13 @@ And that this is quite similar to the popular Matlab syntax (which is
 3. Proposed solution
 
 `start:stop:inc`, with `start`, `stop`, and `inc` being integer 
-expressions of any kind, could be used in array constructors as an
+expressions of any kind, can be used in array constructors as an
 alternative to `(i, integer(kind=ik) :: i = start, stop, inc)`
 
-with: `ik = selected_integer_kind( max( range(start)  &
-                                      , range(stop)   &
-                                      , range(inc)  ) )`
+with: `ik = selected_integer_kind( max( range(start)   &
+                                      , range(stop)  ) )`
 
-`:inc` would be optional, with a default value equal to 1, as usual.
+`:inc` is optional, with a default value equal to 1, as usual.
 
 3.1. Examples
 
