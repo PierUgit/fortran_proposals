@@ -27,7 +27,7 @@ implied do syntax.
 
 Note that some compilers are already accepting this syntax:
 - the Intel compiler (since at least ifort 19)
-- flang-new (although with an unexpected behavior IMO)
+- flang-new
 
 And that this is quite similar to the popular Matlab syntax (which is 
 `start:inc:stop` instead of `start:stop:inc`)
@@ -36,16 +36,25 @@ And that this is quite similar to the popular Matlab syntax (which is
 3. Proposed solution
 
 `start:stop:inc`, with `start`, `stop`, and `inc` being integer 
-expressions of the same kind, could be used in array constructors as an
-alternative to `(i, integer(kind=kind(start)) :: i = start, stop, inc)`
+expressions of any kind, could be used in array constructors as an
+alternative to `(i, integer(kind=ik) :: i = start, stop, inc)`
+
+with: `ik = selected_integer_kind( max( range(start)  &
+                                      , range(stop)   &
+                                      , range(inc)  ) )`
 
 `:inc` would be optional, with a default value equal to 1, as usual.
 
 3.1. Examples
 
 print*, [1:10:3]
-print*, [50, 70:60:-1, 80]
+--> 1 4 7 10
+
+print*, [50, 70:68:-1, 80]
+--> 50 70 69 68 80
+
 print*, [1:0]   ! this one is an empty constructor
+--> 
 
 3.2. Notes
 
