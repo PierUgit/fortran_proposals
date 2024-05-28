@@ -13,10 +13,10 @@ array constructors.
 
 2. Motivation
 
-One of the main usages of the implied do feature is to define arithmetic
+A common usage of the implied do feature is to define integer arithmetic
 sequences in array constructors. In some other languages this is 
 provided by intrinsic functions (`range` in Python, `iota` in APL, ...). 
-In practice, many fortraner do implement their own function to get the
+In practice, many fortraners do implement their own function to get the
 feature and hide the implied do loop.
 
 Fortran has already a very intuitive syntax to define an integer range,
@@ -26,7 +26,7 @@ array constructors, as a shorter and more readable alternative to the
 implied do syntax.
 
 Note that some compilers are already accepting this syntax:
-- the Intel compiler (since at least ifort 19)
+- the Intel compiler
 - flang-new
 
 And that this is quite similar to the popular Matlab syntax (which is 
