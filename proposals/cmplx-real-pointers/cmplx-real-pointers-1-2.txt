@@ -41,15 +41,11 @@ at some point, written in a fully standard-conforming way:
     
     !> 3D convolution in the Fourier domain, using intermediate 
     !> complex arrays and real-to-complex direct and inverse 3D ffts
-    allocate( cD(n(1),n(2),n(3)) )
+    allocate( cD(0:n(1)/2,n(2),n(3)) )
     allocate( CP, cM, mold=cD )
-    call rcfft3d(D) ; call rcfft3d(P)
-    cD(:,:,:) = cmplx( D(1::2,:,:), D(2::2,:,:) )
-    cP(:,:,:) = cmplx( P(1::2,:,:), P(2::2,:,:) )
+    call rcfft3d(D,cD) ; call rcfft3d(P,cP)
     cM = cD * cP
-    M(1::2,:,:) = cM(:,:,:)%re
-    M(2::2,:,:) = cM(:,:,:)%im
-    call crfft(M)
+    call crfft(M,cM)
     
     !> do some postprocessing on the real samples
     x(:) = 1.0 / x(:)
@@ -67,15 +63,17 @@ This use case is not hypothetical, it's a very simplified version of a
 some typical code from seismic data processing (geophysics).
 
 In practice nobody does write code like above in a HPC context, as it
-requires twice the amount of RAM, and spends a significant amount
-of time just copying data between arrays. The classical solution
-was to call a dangling routine (without any interface) and pass real
-actual arguments to complex dummy arguments. This works in practice
-because all compilers do store a complex number as the pair 
-(real part, imaginary part) in this order in memory. Nonetheless this
-is formally a violation of the standard:
+requires twice the amount of RAM (with also some consequences on the 
+volumes transfered between the RAM and the CPU cores). The classical 
+solution was to call a dangling routine (without any interface), 
+pass real actual arguments to complex dummy arguments, and perform
+in-place FFTs. This works in practice because all compilers do store a
+complex number as the pair (real part, imaginary part) in this order in
+memory. Nonetheless this is formally a violation of the standard:
 
-    !> 3D convolution in the Fourier domain
+    !> 3D convolution in the Fourier domain with in-places FFTs
+    !> The real array must have been dimensioned directly with
+    !> FFT compatible sizes
     call rcfft3d(D) ; call rcfft3d(P)
     call fourier_convolution(D,P,M,shape(D))
     call crfft(M)
