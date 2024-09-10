@@ -7,7 +7,7 @@ Date: 2024-xxxx-xx
 
 1. Introduction
 
-In the 24-28 June 2024 meeting, J3 and WG5 have accepted the 
+At the 24-28 June 2024 meeting, J3 and WG5 have accepted the 
 preliminary proposal 24-129 to allow a complex pointer to be
 associated with a real target and vice-versa.
 
@@ -32,7 +32,7 @@ s5. If `c` is a COMPLEX array POINTER that is pointer associated with a non-zero
 
 4. Syntax
 
-Several possible syntaxes are proposed.
+Several possible syntaxes are proposed. Ultimatly, a vote may be needed to chose the most appropriate one.
 
 4.1 Pointer assignment statement
 
