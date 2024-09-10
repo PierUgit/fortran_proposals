@@ -7,7 +7,7 @@ Date: 2024-xxxx-xx
 
 1. Introduction
 
-In the 24-28 June 2024 meeting, J3 and WG5 have accepted the 
+At the 24-28 June 2024 meeting, J3 and WG5 have accepted the 
 preliminary proposal 24-129 to allow a complex pointer to be
 associated with a real target and vice-versa.
 
@@ -15,8 +15,9 @@ This paper elaborates on the use cases and the formal requirements.
 
 2. Use cases
 
-For instance, consider a code that performs a 3D FFT based convolution
-at some point, written in a fully standard-conforming way:
+2.1 3D convolution by FFT
+
+Consider a code that performs a 3D FFT based convolution at some point, written in a fully standard-conforming way:
 
     program foo
     use some_module, only :: read_data, write_data
@@ -62,7 +63,7 @@ at some point, written in a fully standard-conforming way:
 This use case is not hypothetical, it's a very simplified version of a
 some typical code from seismic data processing (geophysics).
 
-In practice nobody does write code like above in a HPC context, as it
+In practice nobody does write the code like above in a HPC context, as it
 requires twice the amount of RAM (with also some consequences on the 
 volumes transfered between the RAM and the CPU cores). The classical 
 solution was to call a dangling routine (without any interface), 
@@ -96,6 +97,12 @@ If it was possible to get a complex pointer to a real array, and
 provided that the de facto standard used by all the compilers to store
 a complex number be standardized, the above code could be written
 without duplicating the arrays and be still be standard conforming.
+
+2.2 Complex dot product with a real result
+
+When computing a dot product between two complex arrays, one sometimes know that the result is supposed to be real, such that it useless to compute the imaginary part of the result. Typically this was (and still is) achieved by calling the SDOT (or DDOT) BLAS functions with the complex arrays as actual arguments (and twice the size), hence with a non-conforming type mismatch. Using the intrinsic DOT_PRODUCT function this way is not possible because the compilers enforce the type conformance.
+
+Again, if it was possible to get a real pointer to a complex array, it would be possible to be fully standard conforming.
 
 3. Formal Requirements
 
