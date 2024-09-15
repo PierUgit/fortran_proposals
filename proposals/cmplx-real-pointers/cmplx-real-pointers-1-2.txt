@@ -17,7 +17,8 @@ This paper elaborates on the use cases and the formal requirements.
 
 2.1 3D convolution by FFT
 
-Consider a code that performs a 3D FFT based convolution at some point, written in a fully standard-conforming way:
+Consider a code that performs a 3D FFT based convolution at some point, 
+written in a fully standard-conforming way:
 
     program foo
     use some_module, only :: read_data, write_data
@@ -59,12 +60,12 @@ Consider a code that performs a 3D FFT based convolution at some point, written 
     call write_data(M)
     
     end program
-    
+
 This use case is not hypothetical, it's a very simplified version of a
 some typical code from seismic data processing (geophysics).
 
-In practice nobody does write the code like above in a HPC context, as it
-requires twice the amount of RAM (with also some consequences on the 
+In practice nobody does write the code like above in a HPC context, as 
+it requires twice the amount of RAM (with also some consequences on the 
 volumes transfered between the RAM and the CPU cores). The classical 
 solution was to call a dangling routine (without any interface), 
 pass real actual arguments to complex dummy arguments, and perform
@@ -100,24 +101,42 @@ without duplicating the arrays and be still be standard conforming.
 
 2.2 Complex dot product with a real result
 
-When computing a dot product between two complex arrays, one sometimes know that the result is supposed to be real, such that it useless to compute the imaginary part of the result. Typically this was (and still is) achieved by calling the SDOT (or DDOT) BLAS functions with the complex arrays as actual arguments (and twice the size), hence with a non-conforming type mismatch. Using the intrinsic DOT_PRODUCT function this way is not possible because the compilers enforce the type conformance.
+When computing a dot product between two complex arrays, one sometimes 
+know that the result is supposed to be real, such that it useless to 
+compute the imaginary part of the result. Typically this was (and still 
+is) achieved by calling the SDOT (or DDOT) BLAS functions with the 
+complex arrays as actual arguments (and twice the size), hence with a 
+non-conforming type mismatch. Using the intrinsic DOT_PRODUCT function 
+this way is not possible because the compilers enforce the type 
+conformance.
 
-Again, if it was possible to get a real pointer to a complex array, it would be possible to be fully standard conforming.
+Again, if it was possible to get a real pointer to a complex array, it 
+would be possible to be fully standard conforming.
 
 3. Formal Requirements
 
-r1. There shall be a mechanism to provide a complex view of a contiguous real array, and a real view of a contiguous complex array.
+r1. There shall be a mechanism to provide a complex view of a contiguous 
+    real array, and a real view of a contiguous complex array.
 
-r2. A view of an array shall itself be an array (of COMPLEX type if it is a complex view, or of REAL type if it a real view).
+r2. A view of an array shall itself be an array (of COMPLEX type if it 
+    is a complex view, or of REAL type if it a real view).
    
 r3. A view of an array shall have the same kind as the array.
 
-r4. A view of an array shall not own the memory
+r4. A view of an array shall not own the memory.
 
-r5. Referencing the real part of the i-th storage unit of a complex view of a real array shall be equivalent to referencing the (2*i-1)-th storage unit of the real array
+r5. Referencing the real part of the i-th storage unit of a complex view
+    of a real array shall be equivalent to referencing the (2*i-1)-th 
+    storage unit of the real array.
 
-r6. Referencing the imaginary part of the i-th storage unit of a complex view of a real array shall be equivalent to referencing the (2*i)-th storage unit of the real array
+r6. Referencing the imaginary part of the i-th storage unit of a complex
+    view of a real array shall be equivalent to referencing the (2*i)-th
+    storage unit of the real array.
 
-r7. Referencing the (2*i-1)-th storage unit of a real view to a complex array shall be equivalent to referencing to the real part of the i-th storage unit of the complex array
+r7. Referencing the (2*i-1)-th storage unit of a real view to a complex 
+    array shall be equivalent to referencing the real part of the i-th 
+    storage unit of the complex array.
    
-r8. Referencing the (2*i)-th storage unit of a real view to a complex array shall be equivalent to referencing to the imaginary part of the i-th storage unit of the complex array
+r8. Referencing the (2*i)-th storage unit of a real view to a complex 
+    array shall be equivalent to referencing the imaginary part of the 
+    i-th storage unit of the complex array.
