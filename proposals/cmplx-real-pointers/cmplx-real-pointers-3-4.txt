@@ -7,48 +7,76 @@ Date: 2024-xxxx-xx
 
 1. Introduction
 
-At the 24-28 June 2024 meeting, J3 and WG5 have accepted the 
-preliminary proposal 24-129 to allow a complex pointer to be
-associated with a real target and vice-versa.
+At the 24-28 June 2024 meeting, J3 and WG5 have accepted the preliminary
+proposal 24-129 to allow a complex pointer to be associated with a real
+target and vice-versa.
 
 This paper elaborates on the formal specifications and the syntax.
 
 3. Formal specifications
 
-s1. It shall be possible to associate a COMPLEX array POINTER with a contiguous REAL array of the same kind, or a REAL array POINTER array to a contiguous COMPLEX array of the same kind.
+s1. It shall be possible to associate a COMPLEX array POINTER with a 
+    contiguous REAL array of the same kind, or a REAL array POINTER 
+    array to a contiguous COMPLEX array of the same kind.
 
-s2. Except the type mismatch that is here allowed by design, all the other rules and capabilities of pointer association apply, unless specified otherwise.
-   
-s3. The size of a COMPLEX array POINTER that is pointer associated with a REAL array shall be equal to half the size of the REAL array.
+s2. Except the type mismatch that is here allowed by design, all the
+    other rules and capabilities of pointer association apply, unless 
+    specified otherwise.
 
-s4. The size of a REAL array POINTER that is pointer associated with a COMPLEX array shall be equal to twice the size of the COMPLEX array.
-   
-s5. If `c` is a COMPLEX array POINTER that is pointer associated with a non-zero size REAL array `r`, or if `r` is a REAL array POINTER that is pointer associated with a non-zero size COMPLEX array `c`:
+s3. The size of a COMPLEX array POINTER that is pointer associated with 
+    a REAL array shall be equal to half the size of the REAL array.
+
+s4. The size of a REAL array POINTER that is pointer associated with a 
+    COMPLEX array shall be equal to twice the size of the COMPLEX array.
+
+s5. If `c` is a COMPLEX array POINTER that is pointer associated with a 
+    non-zero size REAL array `r`, or if `r` is a REAL array POINTER that
+    is pointer associated with a non-zero size COMPLEX array `c`:
     s5a. the size of the leading dimension of `r` shall be even.
-    s5b. if the values v1 and v2 contained in the i-th and (i+1)-th storage units of `r` are defined (`i` being odd and positive), then the value contained in the ((i+1)/2)-th storage unit of `c` shall be defined and equal to `cmplx(v1,v2)`.
-    s5c. if the value `v` contained in the i-th storage unit of `c` is defined (`i` being strictly positive), then the values contained in the (2*i-1)-th and (2*i)-th storage units of `r` shall be defined and respectively equal to `real(v)` and `imag(v)`.
-    s5d. if any of the values contained in the i-th and (i+1)-th storage units of `r` is undefined (`i` being odd and positive), then the value contained in the ((i+1)/2)-th storage unit of `c` shall be undefined.
-    s5e. if the value contained in the i-th storage unit of `c` is undefined (`i` being strictly positive), then the values contained in the (2*i-1)-th and (2*i)-th storage units of `r` shall be undefined.
+    s5b. if the values v1 and v2 contained in the i-th and (i+1)-th 
+         storage units of `r` are defined (`i` being odd and positive),
+         then the value contained in the ((i+1)/2)-th storage unit of 
+         `c` shall be defined and equal to `cmplx(v1,v2)`.
+    s5c. if the value `v` contained in the i-th storage unit of `c` is
+         defined (`i` being strictly positive), then the values 
+         contained in the (2*i-1)-th and (2*i)-th storage units of `r` 
+         shall be defined and respectively equal to `real(v)` and 
+         `imag(v)`.
+    s5d. if any of the values contained in the i-th and (i+1)-th storage
+         units of `r` is undefined (`i` being odd and positive), then 
+         the value contained in the ((i+1)/2)-th storage unit of `c` 
+         shall be undefined.
+    s5e. if the value contained in the i-th storage unit of `c` is 
+         undefined (`i` being strictly positive), then the values 
+         contained in the (2*i-1)-th and (2*i)-th storage units of `r` 
+         shall be undefined.
 
 4. Syntax
 
-Several possible syntaxes are proposed. Ultimatly, a vote may be needed to chose the most appropriate one.
+Several possible syntaxes are proposed. Ultimatly, a vote may be needed
+to chose the most appropriate one.
 
 4.1 Pointer assignment statement
 
-The pointer assignment statement (R1034 of the F2023 standard) is extended to the case where:
-The `P => A` pointer assignment statement (R1034 of the F2023 standard) is extended to the case where:
-- `A` is a real contiguous array, and `P` is a complex pointer array of the same kind as `A`
-- `A` is a complex contiguous array, and `P` is a real pointer array of the same kind as `A`
-An additional constraint apply to these extended cases:
+The `P => A` pointer assignment statement (R1034 of the F2023 standard)
+is extended to the case where:
+- `A` is a real contiguous array, and `P` is a complex pointer array of 
+  the same kind as `A`
+- `A` is a complex contiguous array, and `P` is a real pointer array of
+  the same kind as `A`
+
+Additional constraints apply to these extended cases:
 - The size of the leading dimension of the real array must of be even
 - The size of the complex array is half the size of the real array
 
-All the others features and of the pointer assignment statement apply (bounds remapping, rank remapping, ...).
+All the others features and of the pointer assignment statement apply 
+(bounds remapping, rank remapping, ...).
 
 4.2 "Casted" pointer assignment statement
 
-This is just a variation of the previous one, to make clearer that the types differ and avoid unwanted type conversions (this syntax should be mandatory if chosen):
+This is just a variation of the previous one, to make clearer that the 
+types differ and avoid unwanted type conversions (this syntax should 
+be mandatory if chosen):
 
 P => COMPLEX :: A
 or
