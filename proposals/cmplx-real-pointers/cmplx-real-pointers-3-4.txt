@@ -1,6 +1,6 @@
 To: J3                                                     J3/24-xxx
 From: Pierre Hugonnet
-Subject: allow complex pointer to reals and vice versa
+Subject: allow complex pointer to real target and vice versa
          formal specifications and syntax
 Date: 2024-xxxx-xx
 #Reference:
