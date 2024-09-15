@@ -7,9 +7,9 @@ Date: 2024-xxxx-xx
 
 1. Introduction
 
-At the 24-28 June 2024 meeting, J3 and WG5 have accepted the 
-preliminary proposal 24-129 to allow a complex pointer to be
-associated with a real target and vice-versa.
+At the 24-28 June 2024 meeting, J3 and WG5 have accepted the preliminary
+proposal 24-129 to allow a complex pointer to be associated with a real 
+target and vice-versa.
 
 This paper elaborates on the use cases and the formal requirements.
 
